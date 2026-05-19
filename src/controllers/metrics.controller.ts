@@ -1,26 +1,12 @@
 import { Request, Response } from 'express';
-import { getDb } from '../infrastructure/database/connection';
+import {
+  findCountryMetrics,
+  findJobTitleMetrics,
+} from '../repositories/metrics.repository';
 
 export function getCountryMetrics(req: Request, res: Response): void {
-  const { country } = req.params;
-
-  const row = getDb()
-    .prepare(
-      `SELECT COUNT(*) as count,
-              MIN(salary) as minSalary,
-              MAX(salary) as maxSalary,
-              AVG(salary) as averageSalary
-       FROM employees
-       WHERE country = ?`,
-    )
-    .get(country) as
-    | {
-        count: number;
-        minSalary: number;
-        maxSalary: number;
-        averageSalary: number;
-      }
-    | undefined;
+  const country = req.params.country as string;
+  const row = findCountryMetrics(country);
 
   if (!row || row.count === 0) {
     res.status(404).json({ error: 'No employees found' });
@@ -35,15 +21,8 @@ export function getCountryMetrics(req: Request, res: Response): void {
 }
 
 export function getJobTitleMetrics(req: Request, res: Response): void {
-  const { jobTitle } = req.params;
-
-  const row = getDb()
-    .prepare(
-      `SELECT COUNT(*) as count, AVG(salary) as averageSalary
-       FROM employees
-       WHERE job_title = ?`,
-    )
-    .get(jobTitle) as { count: number; averageSalary: number } | undefined;
+  const jobTitle = req.params.jobTitle as string;
+  const row = findJobTitleMetrics(jobTitle);
 
   if (!row || row.count === 0) {
     res.status(404).json({ error: 'No employees found' });
