@@ -57,6 +57,21 @@ export function updateEmployee(req: Request, res: Response): void {
   });
 }
 
+export function deleteEmployee(req: Request, res: Response): void {
+  const id = Number(req.params.id);
+
+  const result = getDb()
+    .prepare('DELETE FROM employees WHERE id = ?')
+    .run(id);
+
+  if (result.changes === 0) {
+    res.status(404).json({ error: 'Employee not found' });
+    return;
+  }
+
+  res.status(204).send();
+}
+
 export function listEmployees(_req: Request, res: Response): void {
   const rows = getDb()
     .prepare(
