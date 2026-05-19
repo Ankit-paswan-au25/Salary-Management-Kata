@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { EmployeeRow } from '../domain/employee.types';
+import { calculateSalary } from '../lib/salary';
 import { toEmployee, toEmployees } from '../mappers/employee.mapper';
 import { getDb } from '../infrastructure/database/connection';
 
@@ -14,18 +15,7 @@ export function getEmployeeSalary(req: Request, res: Response): void {
     return;
   }
 
-  const grossSalary = row.salary;
-  let deductionRate = 0;
-  if (row.country === 'India') {
-    deductionRate = 0.1;
-  } else if (row.country === 'United States') {
-    deductionRate = 0.12;
-  }
-
-  const deductions = grossSalary * deductionRate;
-  const netSalary = grossSalary - deductions;
-
-  res.status(200).json({ grossSalary, deductions, netSalary });
+  res.status(200).json(calculateSalary(row.salary, row.country));
 }
 
 export function getEmployeeById(req: Request, res: Response): void {
