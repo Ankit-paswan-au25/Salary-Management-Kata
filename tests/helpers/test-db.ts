@@ -18,6 +18,21 @@ export function resetTestDb(): void {
   db.exec('DELETE FROM employees');
 }
 
+export function insertEmployee(employee: {
+  fullName: string;
+  jobTitle: string;
+  country: string;
+  salary: number;
+}): number {
+  const result = getDb()
+    .prepare(
+      `INSERT INTO employees (full_name, job_title, country, salary)
+       VALUES (@fullName, @jobTitle, @country, @salary)`,
+    )
+    .run(employee);
+  return Number(result.lastInsertRowid);
+}
+
 export function findEmployeeById(id: number): {
   id: number;
   full_name: string;
