@@ -9,6 +9,31 @@ type EmployeeRow = {
   salary: number;
 };
 
+export function getEmployeeSalary(req: Request, res: Response): void {
+  const id = Number(req.params.id);
+  const row = getDb()
+    .prepare('SELECT country, salary FROM employees WHERE id = ?')
+    .get(id) as { country: string; salary: number } | undefined;
+
+  if (!row) {
+    res.status(404).json({ error: 'Employee not found' });
+    return;
+  }
+
+  const grossSalary = row.salary;
+  let deductionRate = 0;
+  if (row.country === 'India') {
+    deductionRate = 0.1;
+  } else if (row.country === 'United States') {
+    deductionRate = 0.12;
+  }
+
+  const deductions = grossSalary * deductionRate;
+  const netSalary = grossSalary - deductions;
+
+  res.status(200).json({ grossSalary, deductions, netSalary });
+}
+
 export function getEmployeeById(req: Request, res: Response): void {
   const id = Number(req.params.id);
   const row = getDb()

@@ -3,6 +3,7 @@ import {
   createEmployee,
   deleteEmployee,
   getEmployeeById,
+  getEmployeeSalary,
   listEmployees,
   updateEmployee,
 } from '../controllers/employees.controller';
@@ -10,6 +11,7 @@ import {
 const employeesRouter = Router();
 
 employeesRouter.get('/', listEmployees);
+employeesRouter.get('/:id/salary', getEmployeeSalary);
 employeesRouter.get('/:id', getEmployeeById);
 employeesRouter.put('/:id', updateEmployee);
 employeesRouter.delete('/:id', deleteEmployee);
