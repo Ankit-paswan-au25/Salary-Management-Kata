@@ -1,0 +1,42 @@
+{
+  "name": "incubyte",
+  "version": "1.0.0",
+  "description": "Salary Management Kata",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "test": "cross-env NODE_ENV=test jest",
+    "test:watch": "cross-env NODE_ENV=test jest --watch",
+    "test:coverage": "cross-env NODE_ENV=test jest --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ankit-paswan-au25/Salary-Management-Kata.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ankit-paswan-au25/Salary-Management-Kata/issues"
+  },
+  "homepage": "https://github.com/Ankit-paswan-au25/Salary-Management-Kata#readme",
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.9.0",
+    "@types/supertest": "^7.2.0",
+    "cross-env": "^10.1.0",
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.10",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3"
+  }
+}
