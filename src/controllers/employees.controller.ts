@@ -1,13 +1,7 @@
 import { Request, Response } from 'express';
+import { EmployeeRow } from '../domain/employee.types';
+import { toEmployee, toEmployees } from '../mappers/employee.mapper';
 import { getDb } from '../infrastructure/database/connection';
-
-type EmployeeRow = {
-  id: number;
-  full_name: string;
-  job_title: string;
-  country: string;
-  salary: number;
-};
 
 export function getEmployeeSalary(req: Request, res: Response): void {
   const id = Number(req.params.id);
@@ -47,13 +41,7 @@ export function getEmployeeById(req: Request, res: Response): void {
     return;
   }
 
-  res.status(200).json({
-    id: row.id,
-    fullName: row.full_name,
-    jobTitle: row.job_title,
-    country: row.country,
-    salary: row.salary,
-  });
+  res.status(200).json(toEmployee(row));
 }
 
 export function updateEmployee(req: Request, res: Response): void {
@@ -104,15 +92,7 @@ export function listEmployees(_req: Request, res: Response): void {
     )
     .all() as EmployeeRow[];
 
-  res.status(200).json(
-    rows.map((row) => ({
-      id: row.id,
-      fullName: row.full_name,
-      jobTitle: row.job_title,
-      country: row.country,
-      salary: row.salary,
-    })),
-  );
+  res.status(200).json(toEmployees(rows));
 }
 
 export function createEmployee(req: Request, res: Response): void {
