@@ -9,6 +9,28 @@ type EmployeeRow = {
   salary: number;
 };
 
+export function getEmployeeById(req: Request, res: Response): void {
+  const id = Number(req.params.id);
+  const row = getDb()
+    .prepare(
+      'SELECT id, full_name, job_title, country, salary FROM employees WHERE id = ?',
+    )
+    .get(id) as EmployeeRow | undefined;
+
+  if (!row) {
+    res.status(404).json({ error: 'Employee not found' });
+    return;
+  }
+
+  res.status(200).json({
+    id: row.id,
+    fullName: row.full_name,
+    jobTitle: row.job_title,
+    country: row.country,
+    salary: row.salary,
+  });
+}
+
 export function listEmployees(_req: Request, res: Response): void {
   const rows = getDb()
     .prepare(
