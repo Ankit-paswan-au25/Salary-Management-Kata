@@ -1,20 +1,10 @@
 import { closeDb, getDb } from '../../src/infrastructure/database/connection';
-
-const EMPLOYEES_DDL = `
-  CREATE TABLE IF NOT EXISTS employees (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    full_name TEXT NOT NULL,
-    job_title TEXT NOT NULL,
-    country TEXT NOT NULL,
-    salary INTEGER NOT NULL,
-    created_at TEXT NOT NULL DEFAULT (datetime('now'))
-  );
-`;
+import { getEmployeesMigrationSql } from '../../src/infrastructure/database/migrate';
 
 export function resetTestDb(): void {
   closeDb();
   const db = getDb();
-  db.exec(EMPLOYEES_DDL);
+  db.exec(getEmployeesMigrationSql());
   db.exec('DELETE FROM employees');
 }
 
