@@ -38,6 +38,27 @@ npm start
 
 Default port: `3000` (override with `PORT`).
 
+## Docker
+
+Build and run without installing Node.js locally:
+
+```bash
+docker build -t incubyte-salary-api .
+docker run -p 3000:3000 incubyte-salary-api
+```
+
+Persist the SQLite database on the host:
+
+```bash
+docker run -p 3000:3000 -v incubyte-data:/app/data incubyte-salary-api
+```
+
+Health check:
+
+```bash
+curl http://localhost:3000/health
+```
+
 ## Test
 
 ```bash
